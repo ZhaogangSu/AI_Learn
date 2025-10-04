@@ -81,10 +81,10 @@ class TransformerBlock(nn.Module):
 
 # Transformer Encoder (repeated Transformer Block)
 class TransformerEncoder(nn.Module):
-    def __init__(self, vocab_size, d_model, n_heads, d_ff, num_layers, max_seq_len=5000) -> None:
+    def __init__(self, vocab_size=10000, d_model=512, n_heads=8, d_ff=2048, num_layers=6, max_seq_len=5000) -> None:
         super().__init__()
 
-        self.token_embedding = nn.Embedding(vocab_size, d_model)
+        self.token_embedding = nn.Embedding(vocab_size, d_model) 
         self.pos_encoding = SinusoidalPE(d_model)
         self.blocks = nn.ModuleList(
             [TransformerBlock(d_model, n_heads, d_ff) for _ in range(num_layers)]
@@ -102,24 +102,25 @@ class TransformerEncoder(nn.Module):
         return x
 
 # %%
-batch_size = 4
-seq_len = 10
+if __name__ == "__main__":
+    batch_size = 4
+    seq_len = 10
 
-vocab_size = 10000
-d_model = 512
-n_heads = 8
-d_ff = 2048
-num_layers = 6
-max_seq_len = 5000
+    vocab_size = 10000
+    d_model = 512
+    n_heads = 8
+    d_ff = 2048
+    num_layers = 6
+    max_seq_len = 5000
 
-head_dim = d_model // n_heads
+    head_dim = d_model // n_heads
 
-model = TransformerEncoder(vocab_size, d_model, n_heads, d_ff, num_layers, max_seq_len)
+    model = TransformerEncoder(vocab_size, d_model, n_heads, d_ff, num_layers, max_seq_len)
 
-token_ids = torch.randint(0, vocab_size, (2, 10, 512))
-print(token_ids.shape)
-# output = model(token_ids)
+    token_ids = torch.randint(0, vocab_size, (2, 10, 512))
+    print(token_ids.shape)
+    # output = model(token_ids)
 
-# print(output.shape)
+    # print(output.shape)
 
 
